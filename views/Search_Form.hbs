@@ -1,64 +1,14 @@
-<form action="/examples/form" method="post" >
+<form action="/examples/form" method="post">
     <h1>{{title}}</h1>
     <!-- Email -->
     <div class="mb-3">
         <label for="sMethod" class="form-label">Search Method</label>
-        <select id="sMethod"  name="sMethod"></select>
-        <option value="Title">Title</option>
-        <option value="Author">Author</option>
+        <select id="sMethod" name="sMethod">
+            <option value="Title">Title</option>
+            <option value="Author">Author</option>
+        </select>
     </div>
 
-    <!-- Password-->
-    <div class="mb-3">
-        <label for="pwd" class="form-label">Password:</label>
-        <input type="password" class="form-control {{#if err.pwd}}is-invalid{{/if}}" placeholder="Enter password" name="pwd" id="pwd" value="{{submittedPassword}}">
-        <div class="invalid-feedback">
-            <p>{{err.pwd}}</p>
-        </div>
-    </div>
 
-    <!-- Password-->
-    <div class="mb-3">
-        <label for="Phone" class="form-label">Phone Number: (OPTIONAL)</label>
-        <input type="tel" class="form-control {{#if err.Phone}}is-invalid{{/if}}" placeholder="Enter phone number" name="Phone" id="Phone" value="{{submittedPhone}}">
-        <div class="invalid-feedback">
-            <p>{{err.Phone}}</p>
-        </div>
-    </div>
-
-    <!-- Agree to terms-->
-    <div class="form-check mb-3">
-        <input type="checkbox" class="form-check-input {{#if err.agreed}}is-invalid{{/if}}" name="agreed" id="agreed" value="yes" {{#if submittedAgreed}}checked{{/if}}>
-        <label for="agreed" class="form-check-label">Agree to terms</label>
-        <div class="invalid-feedback">
-            <p>{{err.agreed}}</p>
-        </div>
-    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<!--See if form submit worked - we will output the submitted info on this page-->
-<!--WARNING: This is just for debugging - This is dangerous on your real web app-->
-{{#if isSubmitted}}
-    <div class="card p-2 mb-3">
-        <h2>Submitted values -- this is dangerous</h2>
-        <p>Email: {{submittedEmail}}</p>
-        <p>Password: {{submittedPassword}}</p>
-        <p>Agreed: {{submittedAgreed}}</p>
-    </div>
-{{/if}}
-
-<form action="/examples/upload" method="post" enctype="multipart/form-data">
-    <h1>{{title}}</h1>
-    <!--File Title-->
-    <div class="mb-3">
-        <label for="title1" class="form-label">File 1 Title:</label>
-        <input type="text" class="form-control" placeholder="Enter a file title" name="title1" id="title1" value="{{submittedEmail}}">
-    </div>
-    <!--File Input-->
-    <div class="mb-3">
-        <label for="file1" class="form-label">File 1:</label>
-        <input type="file" class="form-control" placeholder="Select a file" name="file1" id="file1" value="{{submittedEmail}}">
-    </div>
-    <button type="submit" class="btn btn-warning">Upload File</button>
 </form>
