@@ -1,0 +1,14 @@
+<h1>{{pageTitle}}</h1>
+
+{{#each data}}
+    <a class="text-decoration-none" href="">
+        <div class="mb-3 p-3 border border-3 rounded-2 d-flex">
+            <img class="m-3" src="https://covers.openlibrary.org/b/id/{{cover_i}}-M.jpg" alt="Book cover for {{title}}">
+            <div class="m-3">
+                <h5>{{title}}</h5>
+                <p>{{author_name}}</p>
+            </div>
+        </div>
+    </a>
+    
+{{/each}}
