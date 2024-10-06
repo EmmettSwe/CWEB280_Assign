@@ -63,11 +63,26 @@ const fetchData =  (method, search) => {
 router.get('/Review',  function(req, res, next) {
     res.render('Review', { title: 'Review Form' });
 });
-router.post('/Review',
+router.post('/Review',uploader.fields([{ name: 'Review_photo', maxCount: 1 }]),
     [
         body('name').trim().notEmpty().withMessage('You must enter a pen name').bail()
-            .isLength({min: 3, max: 20}).withMessage('Pen name must be between 3 and 20')
+            .isLength({min: 3, max: 20}).withMessage('Pen name must be between 3 and 20 character long'),
 
+        body('rating').notEmpty().custom( (value, {req}) =>{
+            if (req.body.rating <1){
+                throw new Error('Rating must be not be below 1')
+            }
+            return true
+        }).bail()
+        .custom((value,{req}) =>{
+            if(req.body.rating > 5){
+                throw new Error('Rating must not be above 5')
+            }
+            return true
+        }),
+
+        body('comment').trim().notEmpty().withMessage('You must enter a comment').bail()
+            .isLength({min: 1, max: 255}).withMessage("A comment must be under 255 characters in length").bail(),
     ],
     (req, res) => {
         const violations = validationResult(req)
@@ -81,6 +96,9 @@ router.post('/Review',
 
         res.render("Review",{
             title: 'Review form',
+            name: req.body.name,
+            comment: req.body.comment,
+            rating: req.body.rating,
             err: errorMessages
         })
     })
