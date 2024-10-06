@@ -32,4 +32,8 @@ const fetchData =  (method, search) => {
         })
 }
 
+
+router.get('/Review',  function(req, res, next) {
+    res.render('Review', { title: 'Review Form' });
+});
 module.exports = router;
