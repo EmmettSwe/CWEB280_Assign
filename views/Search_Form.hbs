@@ -1,22 +1,26 @@
-
-<div class="mx-auto w-50 vh-100">
-    <form class="my-3" action="/search" method="post">
-        <h1>{{title}}</h1>
-        <!-- Email -->
-        <div class="mb-3">
-            <label for="sMethod" class="form-label">Search Method</label>
-            <select id="sMethod" name="sMethod">
-                <option>-Choose Search Method-</option>
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-            </select>
+<form class="my-3 shadow rounded-3 p-3 w-50 m-auto" action="/search" method="post">
+    <h1>{{title}}</h1>
+    <!-- Email -->
+    <div class="p-2">
+        <label for="sMethod" class="form-label">Search Method</label>
+        <select id="sMethod" name="sMethod" class="{{#if err.sMethod}}is-invalid{{/if}} form-control">
+            <option selected>-Choose Search Method-</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+        </select>
+        <div class="invalid-feedback">
+            <p>{{err.sMethod}}</p>
         </div>
-        <div class="mb-3">
-            <label for="search" class="form-label">Search:</label>
-            <input type="text" name="search" id="search">
+    </div>
+
+    <div class="mb-3 form-group p-2">
+        <label for="search" class="form-label">Search:</label>
+        <input type="text" name="search" id="search" class="{{#if err.search}}is-invalid{{/if}} form-control" value="{{search}}">
+        <div class="invalid-feedback">
+            <p>{{err.search}}</p>
         </div>
+    </div>
 
 
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-</div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
