@@ -1,14 +1,14 @@
-<div class="card-deck ">
-
+<div class="card-deck">
     {{#each reviews}}
-        <div class="card m-3 shadow">
-            <div class="pt-4">
+        <div class="card m-3 shadow w-50 m-auto">
+            <div class="pt-4 m-auto">
                 <img class="p-2 shadow ms-5" width="250" height="450" src="{{this.book.cover_i}}" alt="Book Cover Image">
-                <img class="p-2 shadow ms-5" width="250" height="450" src="{{this.book.cover_i}}" alt="Posted Photo">
+                {{#if this.hasPhoto}}<img class="p-2 shadow ms-5" width="250" height="450" src="{{this.img}}" alt="Posted Photo">{{/if}}
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{this.book.title}}</h5>
-                <p class="card-text">{{this.review}} rated {{this.rating}}/5</p>
+                <p class="card-text"><b>Comment: </b>{{this.review}} </p>
+                <p><b>Review: </b>{{this.rating}}/5</p>
             </div>
         </div>
     {{/each}}

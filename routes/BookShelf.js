@@ -42,6 +42,7 @@ class Review {
         this.review = review;
         this.book = book;
         this.img = img;
+        this.hasPhoto = img !== undefined
     }
 
 }
@@ -114,13 +115,47 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
 
         console.log(errorMessages)
         if (a && b && c) {
+            a =false
+            b =false
+            c =false
+            console.log(req.files)
+            const file1 = req.files.Review_photo?.[0] ?? {orginalname: 'Not Uploaded'}
+
+            const images = []
+            let imagetemp
+            // eslint-disable-next-line n/no-path-concat
+            for (const [fileInputName, fileInfoArray] of Object.entries(req.files)) {
+                for (const tempFileInfo of fileInfoArray) {
+                    moveFile(tempFileInfo, `${__dirname}/../public/images/`)
+
+                    // if the is an error message for the file's fieldname
+                    if (tempFileInfo.fieldname in errorMessages
+                    ) {
+                        // Delete temporary uploaded file if there is an error in the filed name
+                        fs.unlink(tempFileInfo.path, (err) => {
+                            if (err) throw err
+                            console.log('File removed at ' + tempFileInfo.path)
+                        })
+                    } else {
+                        // call the move file function to move the file to public/images folder
+                        moveFile(tempFileInfo, __dirname + '/../public/images/')
+                    }
+
+                    tempFileInfo.displayPath = '/images/' + tempFileInfo.filename + '-' + tempFileInfo.orginalname
+                    imagetemp = '/images/' + tempFileInfo.filename + '-' + tempFileInfo.originalname
+                    images.push(imagetemp)
+                }
+            }
+
             reviews.push(new Review(
                 req.body.rating,
                 req.body.name,
                 req.body.comment,
-                currBook
+                currBook,
+                imagetemp
             ))
             currBook = null
+            imagetemp = null
 
             res.render("Bookshelf",{
                 reviews: reviews
@@ -135,4 +170,12 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
             })
         }
     })
+function moveFile (tempfileInfo, newPath) {
+    newPath += tempfileInfo.filename + '-' + tempfileInfo.originalname
+    fs.rename(tempfileInfo.path, newPath, (err) => {
+        if (err) {
+            console.error(err)
+        }
+    })
+}
 module.exports = router;
