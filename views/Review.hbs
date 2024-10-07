@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-    <form method="post" action="/Bookshelf/Review" class="shadow rounded-3 m-3 p-3">
+    <form method="post" action="/Bookshelf/Review" class="shadow rounded-3 m-3 p-3" enctype="multipart/form-data">
         <h1>A review on {{title}}</h1>
         <div class=" p-2">
             <label for="name" class="form-label">Pen Name:</label>
@@ -25,7 +25,7 @@
         </div>
         <div class=" p-2">
             <label for="Review_photo">Upload a photo:</label><br>
-            <input type="file" class="form-control-file form-control {{#if err.photo}}is-invalid{{/if}}" id="Review_photo">
+            <input type="file" class="form-control-file form-control {{#if err.photo}}is-invalid{{/if}}" id="Review_photo" name="Review_photo">
             <div class="invalid-feedback">
                 <p>{{err.photo}}</p>
             </div>
