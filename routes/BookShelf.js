@@ -160,7 +160,7 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
                     } else {
                         moveFile(tempFileInfo, __dirname + '/../public/images/')
                     }
-                    tempFileInfo.displayPath = '/images/' + tempFileInfo.filename + '-' + tempFileInfo.orginalname\
+                    tempFileInfo.displayPath = '/images/' + tempFileInfo.filename + '-' + tempFileInfo.orginalname
                     // Save to add to the review object
                     imagetemp = '/images/' + tempFileInfo.filename + '-' + tempFileInfo.originalname
                     images.push(imagetemp)
