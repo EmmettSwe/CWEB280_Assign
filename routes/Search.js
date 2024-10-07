@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-// include code from express validator
 const {body, query, validation, validationResult} = require('express-validator')
 const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
-    return msg // we only want the message from All the params being sent in to the formatter
+    return msg
 }
 
 /* GET handler for http://localhost:3000/ and http://localhost:3000/search/. */
@@ -35,8 +34,8 @@ router.post('/search',
         body('search').notEmpty().withMessage('You must enter a value to search by').bail()
             .isLength({
                 min: 1,
-                max: 50
-            }).withMessage('A search value must be no less than 1 and no greater than 50').bail()
+                max: 75
+            }).withMessage('A search value must be no less than 1 and no greater than 75').bail()
             .custom((value, {req}) => {
                 // if everything passed then true
                 passed = true
