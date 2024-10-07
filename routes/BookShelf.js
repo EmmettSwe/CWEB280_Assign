@@ -35,12 +35,13 @@ class Book {
 }
 
 class Review {
-    constructor(rating, name, review, book) {
+    constructor(rating, name, review, book, img) {
         this.rating = rating;
         this.name = name;
         this.rating = rating;
         this.review = review;
         this.book = book;
+        this.img = img;
     }
 
 }
