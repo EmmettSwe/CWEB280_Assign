@@ -127,7 +127,7 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
             }),
 
         body('comment').trim().notEmpty().withMessage('You must enter a comment').bail()
-            .isLength({min: 20, max: 255}).withMessage("A comment must be under 255 characters in length").bail()
+            .isLength({min: 20, max: 255}).withMessage("A comment must be over 20 characters and under 255 characters in length").bail()
             .custom((value, {req}) => {
                 c = true
                 return true

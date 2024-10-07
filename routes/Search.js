@@ -55,6 +55,8 @@ router.post('/search',
         if (passed && passed1) {
             // We call await so that the application knows not to move on
             // until it gets the data from the fetchData method
+            passed =false
+            passed1 =false
             let data = await fetchData(req.body.sMethod, req.body.search);
             res.render('Search_Result',
                 {
@@ -64,6 +66,8 @@ router.post('/search',
                     data
                 });
         } else {
+            passed =false
+            passed1 =false
             // Pass the errors into the form
             res.render('Search_Form', {
                 title: "Search Form",
