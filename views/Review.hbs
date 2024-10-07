@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center">
+    <form method="post" action="/Review" class="shadow rounded-3 m-3 p-3">
+        <h1>A review on {{title}}</h1>
+        <div class=" p-2">
+            <label for="name" class="form-label">Pen Name:</label>
+            <input class="form-text form-control {{#if err.name}}is-invalid{{/if}}" type="text" name="name" id="name" value="{{name}}">
+            <div class="invalid-feedback">
+                <p>{{err.name}}</p>
+            </div>
+        </div>
+        <div class=" p-2">
+            <label for="comment" class="form-label">Comment:</label>
+            <textarea class="form-control {{#if err.comment}}is-invalid{{/if}}" id="comment" name="comment" rows="4" cols="50" >{{comment}}</textarea>
+            <div class="invalid-feedback">
+                <p>{{err.comment}}</p>
+            </div>
+        </div>
+
+        <div class=" p-2">
+            <label for="rating" class="form-label">Rating:</label>
+            <input class="form-range w-25 form-control {{#if err.rating}}is-invalid{{/if}}" type="range" id="rating" name="rating" min="0" max="5" value="{{rating}}" step="1">
+            <div class="invalid-feedback">
+                <p>{{err.rating}}</p>
+            </div>
+        </div>
+        <div class=" p-2">
+            <label for="Review_photo">Upload a photo:</label><br>
+            <input type="file" class="form-control-file form-control {{#if err.photo}}is-invalid{{/if}}" id="Review_photo">
+            <div class="invalid-feedback">
+                <p>{{err.photo}}</p>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
