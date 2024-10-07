@@ -23,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/', SearchRouter)
+app.use('/Search', SearchRouter)
 app.use('/Bookshelf', BookshelfRouter)
 app.use('/About', AboutRouter)
 

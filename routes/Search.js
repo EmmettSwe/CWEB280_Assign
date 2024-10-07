@@ -22,7 +22,6 @@ const fs = require('fs')
 
 // include code from express validator package
 const {body, query, validation, validationResult} = require('express-validator')
-// Create a formatter to clean up the validation result data in a way that makes it easier to display to the user
 const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
     return msg // we only want the message from All the params being sent in to the formatter
 }
@@ -30,7 +29,11 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
 
 /* GET home page. */
 router.get('/search', function (req, res, next) {
-    res.render('Search_Form', {title: 'Search Form'});
+
+
+    res.render('Search_Form', {
+        title: 'Search Form'
+    });
 });
 let passed1 = false
 let passed = false
@@ -100,50 +103,5 @@ const fetchData = (method, search) => {
             return json.docs;
         })
 }
-
-
-router.get('/Review', function (req, res, next) {
-    res.render('Review', {title: 'Review Form'});
-});
-router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
-    [
-        body('name').trim().notEmpty().withMessage('You must enter a pen name').bail()
-            .isLength({min: 3, max: 20}).withMessage('Pen name must be between 3 and 20 character long'),
-
-        body('rating').notEmpty().custom((value, {req}) => {
-            if (req.body.rating < 1) {
-                throw new Error('Rating must be not be below 1')
-            }
-            return true
-        }).bail()
-            .custom((value, {req}) => {
-                if (req.body.rating > 5) {
-                    throw new Error('Rating must not be above 5')
-                }
-                return true
-            }),
-
-        body('comment').trim().notEmpty().withMessage('You must enter a comment').bail()
-            .isLength({min: 1, max: 255}).withMessage("A comment must be under 255 characters in length"),
-    ],
-    (req, res) => {
-        const violations = validationResult(req)
-        console.log('Validation Results Violations')
-        console.log(violations)
-
-        // take the ugly violations onj and clean it up for display
-        const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped()
-
-        console.log(errorMessages)
-
-        res.render("Review", {
-            title: 'Review form',
-            name: req.body.name,
-            comment: req.body.comment,
-            rating: req.body.rating,
-            err: errorMessages
-        })
-    })
-
 
 module.exports = router;
