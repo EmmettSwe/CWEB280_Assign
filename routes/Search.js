@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const passport = require('passport');
 
 const {body, query, validation, validationResult} = require('express-validator')
 const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
@@ -7,7 +8,10 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
 }
 
 /* GET handler for http://localhost:3000/ and http://localhost:3000/search/. */
-router.get('/', function (req, res, next) {
+router.get('/',
+    function (req, res, next) {
+    console.log(req.isAuthenticated());
+    console.log(req.user);
     // Just render the form
     res.render('Search_Form', {
         title: 'Search Form'
@@ -17,6 +21,7 @@ let passed1 = false
 let passed = false
 /* POST handler for http://localhost:3000/ */
 router.post('/search',
+    passport.authenticate('google', { failureRedirect: '/login' }),
     [
         body('sMethod').notEmpty().withMessage('You must use a search method').bail()
             .custom((value, {req}) => {
