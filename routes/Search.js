@@ -10,18 +10,20 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
 /* GET handler for http://localhost:3000/ and http://localhost:3000/search/. */
 router.get('/',
     function (req, res, next) {
-    console.log(req.isAuthenticated());
-    console.log(req.user);
+    if (!req.isAuthenticated()) {
+        res.redirect('/login')
+    }
+    console.log(req.user)
     // Just render the form
     res.render('Search_Form', {
-        title: 'Search Form'
+        title: 'Search Form',
+        user: req.user
     });
 });
 let passed1 = false
 let passed = false
 /* POST handler for http://localhost:3000/ */
 router.post('/search',
-    passport.authenticate('google', { failureRedirect: '/login' }),
     [
         body('sMethod').notEmpty().withMessage('You must use a search method').bail()
             .custom((value, {req}) => {
@@ -49,6 +51,9 @@ router.post('/search',
     ],
     // Because we are using a fetchData method the function needs to be asynchronous
     async function (req, res, next) {
+        if (!req.isAuthenticated()) {
+            res.redirect('/login')
+        }
         // check for valid input data
         const violations = validationResult(req)
 
@@ -77,7 +82,8 @@ router.post('/search',
             res.render('Search_Form', {
                 title: "Search Form",
                 search: req.body.search,
-                err: errorMessages
+                err: errorMessages,
+                user: req.user
             })
         }
     })

@@ -8,11 +8,11 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/oauth2/redirect/google',
-    scope: [ 'profile' ]
+    scope: [ 'profile', 'email' ]
 }, function verify(issuer, profile, cb) {
     const user = {
         googleId: profile.id,
-        email: profile.email,
+        email: profile.emails[0].value,
         displayName: profile.displayName
     }
     cb(null, user);

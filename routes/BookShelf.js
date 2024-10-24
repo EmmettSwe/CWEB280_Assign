@@ -64,9 +64,13 @@ class Review {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/login')
+    }
     res.render('Bookshelf', {
         title: 'Your Bookshelf',
-        reviews: reviews
+        reviews: reviews,
+        user: req.user
     });
 });
 /**
@@ -82,6 +86,9 @@ let a = false
 let b = false
 let c = false
 router.get('/Review', function (req, res, next) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/login')
+    }
     //make a book
     currBook = new Book(
         req.query.title,
@@ -91,7 +98,8 @@ router.get('/Review', function (req, res, next) {
     books.push(currBook) // add book to storage
     // render the review page
     res.render('Review', {
-        title: req.query.title
+        title: req.query.title,
+        user: req.user
     });
 });
 /**
@@ -134,6 +142,9 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
             }),
     ],
     (req, res) => {
+        if (!req.isAuthenticated()) {
+            res.redirect('/login')
+        }
         const violations = validationResult(req)
         const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped()
 
@@ -180,7 +191,8 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
             imagetemp = null
             // Show all the users session reviews
             res.render("Bookshelf", {
-                reviews: reviews
+                reviews: reviews,
+                user: req.user
             })
         } else {
             // If the validation found and error render page again with the values they had inputted
@@ -189,7 +201,8 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
                 name: req.body.name,
                 comment: req.body.comment,
                 rating: req.body.rating,
-                err: errorMessages
+                err: errorMessages,
+                user: req.user
             })
         }
     })
