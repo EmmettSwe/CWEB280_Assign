@@ -11,8 +11,8 @@ const passport = require('passport');
 const SearchRouter = require('./routes/Search')
 const BookshelfRouter = require('./routes/Bookshelf')
 const AboutRouter = require('./routes/About')
-const IndexRouter = require('./routes/index')
 const AuthRouter = require('./routes/auth')
+const ActivityRouter = require('./routes/activity')
 
 require('dotenv').config();
 
@@ -27,20 +27,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
-
+// Configuring the sessions
 const sessOptions = {
-  secret: "test_secret",
+  // Super secret key in dotenv
+  secret: process.env.SECRET,
   name: 'session-id',
   resave: false,
   saveUninitialized: false,
   cookie: {httpOnly: false, maxAge: 1000*60*60},
   unset: 'destroy',
-  store: new SQLiteStore({ // a location to store session besides the memory
+  store: new SQLiteStore({
     client: new Sqlite('sessions.db', {verbose: console.log}),
     expired: {clear: true, intervalMs: 1000*60*15},
   }),
 };
 
+// using the session
 app.use(session(sessOptions));
 
 app.use(passport.initialize());
@@ -48,9 +50,10 @@ app.use(passport.session());
 
 app.use('/', SearchRouter);
 app.use('/', AuthRouter);
-app.use('/Search', SearchRouter)
-app.use('/Bookshelf', BookshelfRouter)
-app.use('/About', AboutRouter)
+app.use('/Search', SearchRouter);
+app.use('/Bookshelf', BookshelfRouter);
+app.use('/About', AboutRouter);
+app.use('/activity', ActivityRouter);
 
 
 // catch 404 and forward to error handler

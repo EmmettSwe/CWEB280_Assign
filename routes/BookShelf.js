@@ -67,6 +67,24 @@ router.get('/', function (req, res, next) {
     if (!req.isAuthenticated()) {
         res.redirect('/login')
     }
+
+    if (req.session.activity)
+    {
+        req.session.activity.unshift({
+            page: "Bookshelf",
+            actionDescription: "Viewed users bookshelf",
+            date: new Date()
+        })
+    }
+    else
+    {
+        req.session.activity = [
+            {
+                page: "Bookshelf",
+                actionDescription: "Viewed users bookshelf",
+                date: new Date()
+            }]
+    }
     res.render('Bookshelf', {
         title: 'Your Bookshelf',
         reviews: reviews,
@@ -88,6 +106,24 @@ let c = false
 router.get('/Review', function (req, res, next) {
     if (!req.isAuthenticated()) {
         res.redirect('/login')
+    }
+
+    if (req.session.activity)
+    {
+        req.session.activity.unshift({
+            page: "Review",
+            actionDescription: "Opened the review form",
+            date: new Date()
+        })
+    }
+    else
+    {
+        req.session.activity = [
+            {
+                page: "Review",
+                actionDescription: "Opened the review form",
+                date: new Date()
+            }]
     }
     //make a book
     currBook = new Book(
@@ -187,6 +223,23 @@ router.post('/Review', uploader.fields([{name: 'Review_photo', maxCount: 1}]),
                 currBook,
                 imagetemp
             ))
+            if (req.session.activity)
+            {
+                req.session.activity.unshift({
+                    page: "Bookshelf",
+                    actionDescription: "Just finished posting a review",
+                    date: new Date()
+                })
+            }
+            else
+            {
+                req.session.activity = [
+                    {
+                        page: "Bookshelf",
+                        actionDescription: "Just finished posting a review",
+                        date: new Date()
+                    }]
+            }
             currBook = null
             imagetemp = null
             // Show all the users session reviews

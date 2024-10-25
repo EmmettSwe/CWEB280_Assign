@@ -8,10 +8,30 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
 }
 
 /* GET handler for http://localhost:3000/ and http://localhost:3000/search/. */
-router.get('/',
-    function (req, res, next) {
+router.get('/', function (req, res, next) {
+    // check if the user has been authenticated (set by passport)
+    // If not then send them to login
     if (!req.isAuthenticated()) {
         res.redirect('/login')
+    }
+
+    if (req.session.activity)
+    {
+        req.session.activity.unshift({
+            page: "Search",
+            actionDescription: "Go to the search form",
+            date: new Date()
+        })
+    }
+    else
+    {
+        req.session.activity = [
+            {
+                page: "Search",
+                actionDescription: "Go to the search form",
+                date: new Date()
+            }
+        ]
     }
     console.log(req.user)
     // Just render the form
@@ -54,6 +74,26 @@ router.post('/search',
         if (!req.isAuthenticated()) {
             res.redirect('/login')
         }
+
+        if (req.session.activity)
+        {
+            req.session.activity.unshift({
+                page: "Search",
+                actionDescription: `Searched for ${req.body.search}`,
+                date: new Date()
+            })
+        }
+        else
+        {
+            req.session.activity = [
+                {
+                    page: "Search",
+                    actionDescription: `Searched for ${req.body.search}`,
+                    date: new Date()
+                }
+            ]
+        }
+
         // check for valid input data
         const violations = validationResult(req)
 

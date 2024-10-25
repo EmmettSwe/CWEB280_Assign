@@ -1,0 +1,12 @@
+<div class="w-50">
+    <h1>Activity for {{user.displayName}}</h1>
+    <p>E-mail: {{user.email}}</p>
+
+    {{#each activity}}
+    <div class="card">
+        <h3>{{page}}</h3>
+        <p>{{actionDescription}}</p>
+        <p>{{date}}</p>
+    </div>
+    {{/each}}
+</div>
