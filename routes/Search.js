@@ -38,7 +38,9 @@ router.get('/', function (req, res, next) {
     // Just render the form
     res.render('Search_Form', {
         title: 'Search Form',
-        user: req.user
+        user: req.user,
+        searchCookie: req.cookies.Search,
+        methodCookie: req.cookies.Method
     });
 });
 let passed1 = false
