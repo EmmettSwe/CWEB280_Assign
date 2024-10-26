@@ -3,6 +3,7 @@ var router = express.Router();
 const passport = require('passport');
 
 const {body, query, validation, validationResult} = require('express-validator')
+const {cppdb} = require("better-sqlite3/lib/util");
 const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
     return msg
 }
@@ -99,7 +100,18 @@ router.post('/search',
 
         // Creating errorMessages object
         const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped()
-
+        const cookieOptions = {
+            path: req.baseUrl,
+            sameSite: 'lax',
+            httpOnly: req.body.hide && req.body.hide ==='false',
+        };
+        for (const cookieName in req.cookies) {
+            res.clearCookie(cookieName, cookieOptions);
+        }
+        cookieOptions.Search = req.body.search
+        cookieOptions.Method = req.body.Search
+        res.cookie('Search', req.body.search, cookieOptions)
+        res.cookie('Method', req.body.sMethod, cookieOptions)
 
         // If validation passed then we fetch the data and render the Search results
         if (passed && passed1) {
@@ -123,7 +135,8 @@ router.post('/search',
                 title: "Search Form",
                 search: req.body.search,
                 err: errorMessages,
-                user: req.user
+                user: req.user,
+                postedValues: req.body
             })
         }
     })

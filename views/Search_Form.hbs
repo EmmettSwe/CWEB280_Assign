@@ -16,7 +16,7 @@
 
         <div class="mb-3 form-group p-2">
             <label for="search" class="form-label">Search:</label>
-            <input type="text" name="search" id="search" class="{{#if err.search}}is-invalid{{/if}} form-control" value="{{search}}">
+            <input type="text" name="search" id="search" class="{{#if err.search}}is-invalid{{/if}} form-control" value="{{postedValues.Search}}">
             <div class="invalid-feedback">
                 <p>{{err.search}}</p>
             </div>
